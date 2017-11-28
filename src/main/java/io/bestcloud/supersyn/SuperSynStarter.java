@@ -82,7 +82,7 @@ public class SuperSynStarter {
 					try {
 						System.out.println("查询是否有 blockchainInfo.");
 						blockWalker(client.getHFClient(), client.getChannel(), logRecorder.getLastDataSyLogRec().blockID);
-						if(notityContition.await(500, TimeUnit.SECONDS)){
+						if(notityContition.await(300, TimeUnit.SECONDS)){
 							System.out.println("监听到事件通知");
 							for (TransactionEvent transactionEvent : atomicBlockEvent.get().getTransactionEvents()) {
 								System.out.println("Received Transation event " + transactionEvent.getChannelId() + " ID: "
