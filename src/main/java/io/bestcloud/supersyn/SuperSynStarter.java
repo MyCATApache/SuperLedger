@@ -5,13 +5,15 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.hyperledger.fabric.protos.peer.Query.ChaincodeInfo;
+import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.BlockEvent.TransactionEvent;
-import org.hyperledger.fabric.sdk.BlockInfo;
-import org.hyperledger.fabric.sdk.BlockchainInfo;
-import org.hyperledger.fabric.sdk.Channel;
-import org.hyperledger.fabric.sdk.HFClient;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.InvalidProtocolBufferRuntimeException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
@@ -35,16 +37,79 @@ public class SuperSynStarter {
 		LedgerClient client = new LedgerClient();
 		blockWalker(client.getHFClient(), client.getChannel(), logRecorder.getLastDataSyLogRec().blockID);
 		// 注册监听事件
-		client.getChannel().registerBlockListener(blockEvent -> {
-			for (TransactionEvent transactionEvent : blockEvent.getTransactionEvents()) {
-				System.out.println("Received Transation event " + transactionEvent.getChannelId() + " ID: "
-						+ transactionEvent.getTransactionID() + " block id " + blockEvent.getBlockNumber());
-				processSyncDataFromBlock(blockEvent);
-
-			}
-		});
-
+		client.getChannel().registerBlockListener(blockEvent -> new MyBlockListener(client));
 	}
+
+	private class MyBlockListener implements BlockListener {
+		private final LedgerClient client;
+		private final Worker worker;
+
+		public MyBlockListener(LedgerClient client) {
+			this.client = client;
+			worker = new Worker();
+			new Thread(worker).start();//worker启动轮询事件
+		}
+
+		@Override
+		public void received(BlockEvent blockEvent) {
+			//收到监听事件,立刻通知worker
+			worker.notity(blockEvent);
+		}
+
+		private class Worker implements Runnable {
+
+			private Lock lock;
+			private Condition notityContition;
+			private AtomicReference<BlockEvent> atomicBlockEvent = new AtomicReference<>();
+			public Worker() {
+				this.lock = new ReentrantLock();
+				this.notityContition = lock.newCondition();
+			}
+
+			public void notity(BlockEvent blockEvent){
+				lock.lock();
+				try {
+					atomicBlockEvent.set(blockEvent);
+					notityContition.signal();
+				}finally {
+					lock.unlock();
+				}
+			}
+			@Override
+			public void run() {
+				while (true) {
+					lock.lock();
+					try {
+						System.out.println("查询是否有 blockchainInfo.");
+						blockWalker(client.getHFClient(), client.getChannel(), logRecorder.getLastDataSyLogRec().blockID);
+						if(notityContition.await(500, TimeUnit.SECONDS)){
+							System.out.println("监听到事件通知");
+							for (TransactionEvent transactionEvent : atomicBlockEvent.get().getTransactionEvents()) {
+								System.out.println("Received Transation event " + transactionEvent.getChannelId() + " ID: "
+										+ transactionEvent.getTransactionID() + " block id " + atomicBlockEvent.get().getBlockNumber());
+								processSyncDataFromBlock(atomicBlockEvent.get());
+
+							}
+							atomicBlockEvent.set(null);
+						} else {
+							System.out.println("没有监听到事件通知");
+						}
+					} catch (InvalidArgumentException e) {
+						//TODO
+					} catch (IOException e) {
+						//TODO
+					} catch (ProposalException e) {
+						//TODO
+					} catch (InterruptedException e) {
+						//TODO
+					} finally {
+						lock.unlock();
+					}
+				}
+			}
+		}
+	}
+
 
 	private void blockWalker(HFClient client, Channel channel, long fromHeight)
 			throws InvalidArgumentException, ProposalException, IOException {
@@ -95,9 +160,9 @@ public class SuperSynStarter {
 						int chaincodeInpuArgsCount = transactionActionInfo.getChaincodeInputArgsCount();
 						if (chaincodeInpuArgsCount == 3
 								&& Arrays.equals(transactionActionInfo.getChaincodeInputArgs(0),
-										"invoke".getBytes("iso-8859-1"))
+								"invoke".getBytes("iso-8859-1"))
 								&& Arrays.equals(transactionActionInfo.getChaincodeInputArgs(1),
-										"dbsync".getBytes("iso-8859-1"))) {
+								"dbsync".getBytes("iso-8859-1"))) {
 							System.out.println("received  data synch event  ");
 							actionNo++;
 							String txSeq = txID + "_" + actionNo;
@@ -127,7 +192,7 @@ public class SuperSynStarter {
 			}
 		} catch (
 
-		Exception e) {
+				Exception e) {
 			e.printStackTrace();
 		}
 	}
