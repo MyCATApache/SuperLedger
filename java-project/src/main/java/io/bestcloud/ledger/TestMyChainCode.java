@@ -1,20 +1,16 @@
-package io.bestcloud.supersyn;
+package io.bestcloud.ledger;
 
 import static org.hyperledger.fabric.sdk.BlockInfo.EnvelopeType.TRANSACTION_ENVELOPE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.codec.binary.Hex;
 import org.hyperledger.fabric.protos.ledger.rwset.kvrwset.KvRwset;
-import org.hyperledger.fabric.sdk.BlockEvent.TransactionEvent;
 import org.hyperledger.fabric.sdk.BlockInfo;
 import org.hyperledger.fabric.sdk.BlockchainInfo;
 import org.hyperledger.fabric.sdk.ChaincodeID;
@@ -30,11 +26,6 @@ import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.InvalidProtocolBufferRuntimeException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
 
-import com.google.protobuf.InvalidProtocolBufferException;
-
-import io.bestcloud.ledger.LedgerClient;
-import io.bestcloud.ledger.LedgerUtil;
-
 public class TestMyChainCode {
 
 	public static void main(String[] args) throws Exception {
@@ -44,48 +35,23 @@ public class TestMyChainCode {
 		String mychaincodeVersion = LedgerUtil.getProp("chaincodeVersion");
 		ChaincodeID chaincodeID = ChaincodeID.newBuilder().setName(mychaincodeName).setVersion(mychaincodeVersion)
 				.build();
-		// 批量设置
-		batchSetKeyValue(client.getHFClient(), client.getChannel(), chaincodeID);
+		// 设置
+		setKeyValue(client.getHFClient(), client.getChannel(), chaincodeID);
 		// 批量查询
 		batchQueryChaincode(client.getHFClient(), client.getChannel(), chaincodeID);
 		// queryChaincode(client, channel, chaincodeID);
 		// blockWalker(client,channel);
 	}
 
-	private static int batchSetKeyValue(HFClient client, Channel channel, ChaincodeID chaincodeID)
-			throws ProposalException, InvalidArgumentException, UnsupportedEncodingException,
-			InvalidProtocolBufferException, InterruptedException, ExecutionException {
-		long startTime = System.currentTimeMillis();
+	private static void setKeyValue(HFClient client, Channel channel, ChaincodeID chaincodeID) throws Exception {
+
 		TransactionProposalRequest txProposal = client.newTransactionProposalRequest();
-		// txProposal.setArgs(keyAndValues);
-		// byte[] data = new byte[64 ];
-		// for (int i = 0; i < data.length; i++) {
-		// data[i] = (byte) (45 + i % 45);
-		// }
 		byte[] data = ("insert into mytable values (" + System.currentTimeMillis() % 1000 + ")").getBytes();
 		txProposal.setArgBytes(new byte[][] { "dbsync".getBytes(), data });
 		txProposal.setFcn("invoke");
 		txProposal.setChaincodeID(chaincodeID);
-		int usedTime = 0;
-		Collection<ProposalResponse> proposeResponses = channel.sendTransactionProposal(txProposal, channel.getPeers());
-		for (ProposalResponse proposalResponse : proposeResponses) {
-			if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
-				fail("Failed query proposal from peer " + proposalResponse.getPeer().getName() + " status: "
-						+ proposalResponse.getStatus() + ". Messages: " + proposalResponse.getMessage()
-						+ ". Was verified : " + proposalResponse.isVerified());
-			} else {
-				assertEquals(200, proposalResponse.getChaincodeActionResponseStatus()); // Chaincode's
-				CompletableFuture<TransactionEvent> eventFuture = channel.sendTransaction(proposeResponses);
-				// System.out.println("waiting orderer return ");
-				TransactionEvent transactionEvent = eventFuture.get();
-				usedTime = (int) ((System.currentTimeMillis() - startTime) / 1000);
-				assertTrue(transactionEvent.isValid()); // must be valid to be
-				System.out.println(String.format("Finished transaction with transaction id %s",
-						transactionEvent.getTransactionID()));
+		LedgerUtil.commitTransaction(txProposal, channel);
 
-			}
-		}
-		return usedTime;
 	}
 
 	private static void batchQueryChaincode(HFClient client, Channel channel, ChaincodeID chaincodeID)

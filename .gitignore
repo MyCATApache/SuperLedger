@@ -1,4 +1,4 @@
-/.settings
-/.classpath
-/.project
-/target
+/java-project/.project
+/java-project/.settings
+/java-project/target
+/java-project/.classpath

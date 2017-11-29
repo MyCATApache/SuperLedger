@@ -4,7 +4,9 @@ import static org.hyperledger.fabric.sdk.BlockInfo.EnvelopeType.TRANSACTION_ENVE
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Properties;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.commons.codec.binary.Hex;
 import org.hyperledger.fabric.protos.ledger.rwset.kvrwset.KvRwset;
@@ -12,8 +14,11 @@ import org.hyperledger.fabric.sdk.BlockInfo;
 import org.hyperledger.fabric.sdk.BlockchainInfo;
 import org.hyperledger.fabric.sdk.Channel;
 import org.hyperledger.fabric.sdk.HFClient;
+import org.hyperledger.fabric.sdk.ProposalResponse;
 import org.hyperledger.fabric.sdk.SDKUtils;
+import org.hyperledger.fabric.sdk.TransactionProposalRequest;
 import org.hyperledger.fabric.sdk.TxReadWriteSetInfo;
+import org.hyperledger.fabric.sdk.BlockEvent.TransactionEvent;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.InvalidProtocolBufferRuntimeException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
@@ -32,6 +37,34 @@ public class LedgerUtil {
 
 	public static String getProp(String key) {
 		return props.getProperty(key);
+	}
+
+	public static String commitTransaction(TransactionProposalRequest txProposal, Channel channel) throws Exception {
+
+		Collection<ProposalResponse> proposeResponses = channel.sendTransactionProposal(txProposal, channel.getPeers());
+		boolean proposeSuc = true;
+		for (ProposalResponse proposalResponse : proposeResponses) {
+			if (!proposalResponse.isVerified() || proposalResponse.getStatus() != ProposalResponse.Status.SUCCESS) {
+				System.out.println("Failed query proposal from peer " + proposalResponse.getPeer().getName()
+						+ " status: " + proposalResponse.getStatus() + ". Messages: " + proposalResponse.getMessage()
+						+ ". Was verified : " + proposalResponse.isVerified());
+				proposeSuc = false;
+				break;
+			}
+		}
+
+		if (proposeSuc) {
+			CompletableFuture<TransactionEvent> eventFuture = channel.sendTransaction(proposeResponses);
+			TransactionEvent transactionEvent = eventFuture.get();
+			if (!transactionEvent.isValid()) {
+				throw new RuntimeException("commit syn transaction err ");
+			}
+			System.out.println("Finished transaction with transaction id " + transactionEvent.getTransactionID());
+			return transactionEvent.getTransactionID();
+		} else {
+			throw new RuntimeException("commit syn transaction err ,proposal failed  ");
+		}
+
 	}
 
 	public static void getBlockInf(HFClient client, BlockInfo returnedBlock) {
@@ -133,12 +166,11 @@ public class LedgerUtil {
 								rs = -1;
 								for (KvRwset.KVWrite writeList : rws.getWritesList()) {
 									rs++;
-									byte[] valueBt=writeList.getValue().toByteArray();
-									String valAsString = printableString(
-											new String(valueBt, "UTF-8"));
-									System.out.println(
-											String.format("     Namespace %s write set %d key %s has value,len %s, value  '%s' ",
-													namespace, rs, writeList.getKey(),valueBt.length, valAsString));
+									byte[] valueBt = writeList.getValue().toByteArray();
+									String valAsString = printableString(new String(valueBt, "UTF-8"));
+									System.out.println(String.format(
+											"     Namespace %s write set %d key %s has value,len %s, value  '%s' ",
+											namespace, rs, writeList.getKey(), valueBt.length, valAsString));
 
 								}
 							}
