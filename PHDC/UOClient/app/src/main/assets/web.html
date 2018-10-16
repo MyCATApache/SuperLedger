@@ -1,0 +1,51 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=gb2312">
+    <script type="text/javascript">
+
+    function test1() {
+        var index1 = {"InstID":"1001", "DepartID":"2345", "ItemID":"2345"}
+        window.obj.putIndex(JSON.stringify(index1))
+        var index2 = {"InstID":"1001", "DepartID":"2346", "ItemID":"2346"}
+        window.obj.putIndex(JSON.stringify(index2))
+    }
+
+    function getHO_ret(arg){
+        alert("getHO_ret : "+arg);
+    }
+
+    function putIndex_ret(arg) {
+        alert("putIndex_ret : "+arg);
+    }
+
+    function getDataList_ret(arg){
+        alert("getDataList_ret : "+arg);
+    }
+
+    function getDeparts_ret(arg) {
+        alert("getDeparts_ret : "+arg);
+    }
+
+    function getInviteList_ret(arg){
+        alert("getInviteList_ret : "+arg);
+    }
+
+    function accept_ret(arg) {
+        alert("accept_ret : "+arg);
+    }
+    </script>
+</head>
+<body>
+HTML 内容显示 <br/>
+<h1>
+    <div id="content">区块链调用演示</div>
+</h1>
+<br/>
+<input type="button" value="getHO" onclick="window.obj.getHO('Incoming parameters')"/><br/>
+<input type="button" value="putIndex" onclick="test1('')"/><br/>
+<input type="button" value="getDataList" onclick="window.obj.getDataList('Incoming parameters')"/><br/>
+<input type="button" value="getDeparts" onclick="window.obj.getDeparts('Incoming parameters')"/><br/>
+<input type="button" value="getInviteList" onclick="window.obj.getInviteList('Incoming parameters')"/><br/>
+<input type="button" value="accept" onclick="window.obj.accept('Incoming parameters')"/><br/>
+</body>
+</html>

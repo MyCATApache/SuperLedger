@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mycat.fabric.phdc.dao.mapper.ReportMapper">
+  <resultMap id="BaseResultMap" type="io.mycat.fabric.phdc.entity.Report">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="report_id" jdbcType="VARCHAR" property="reportId" />
+    <result column="depart_name" jdbcType="VARCHAR" property="departName" />
+    <result column="check_date" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+  </resultMap>
+  
+  	<insert id="saveInvitationResult">  
+        INSERT INTO `tb_report`(`report_id`, `depart_name`, `check_date`, `result`) 
+        VALUES
+        <foreach collection="reports" item="report" separator=",">  
+            (#{report.reportId},#{report.departName},#{report.checkDate},#{report.result})
+        </foreach>  
+	</insert>  
+  
+  
+</mapper>

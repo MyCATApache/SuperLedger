@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mycat.fabric.phdc.dao.mapper.MemberMapper">
+  <resultMap id="BaseResultMap" type="io.mycat.fabric.phdc.entity.Member">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  
+   <select id="getLastId" resultType="java.lang.Integer">
+    	SELECT LAST_INSERT_ID();
+  </select>
+  
+</mapper>

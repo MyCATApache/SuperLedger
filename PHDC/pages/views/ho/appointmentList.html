@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>预约管理</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div class="main" style="width: 90%;margin-left: 5%;margin-top: 5%">
+		<h2>预约管理</h2>
+		<table class="table table-hover">
+	  	<thead>
+		    <tr>
+		      <th scope="col">姓名</th>
+		      <th scope="col">年龄</th>
+		      <th scope="col">性别</th>
+		      <th scope="col">预约日期</th>
+		      <th scope="col">状态</th>
+		    </tr>
+		  </thead>
+		  <tbody class="tbody">
+		   <!--  <tr>
+		   		  	 <td>黄飞</td>
+		   		  	 <td>30</td>
+		   		  	 <td>男</td>
+		   		  	 <td>2018/02/02</td>
+		   		  	 <td><a class="btn btn-info btn-sm" href="#">到检</a></td>
+		   		  	</tr>
+		   		  	<tr>
+		   		  	 <td>赵锴</td>
+		   		  	 <td>36</td>
+		   		  	 <td>男</td>
+		   		  	 <td>2018/02/03</td>
+		   		  	 <td>已到检</td>
+		   		  	</tr>
+		   		  	<tr>
+		   		  	 <td>詹应达</td>
+		   		  	 <td>34</td>
+		   		  	 <td>男</td>
+		   		  	 <td>2018/02/03</td>
+		   		  	 <td>未到检</td>
+		   		  	</tr> -->
+		  </tbody>
+		</table>
+	</div>
+
+	</body>
+
+ 	<script src="../../js/jquery-3.1.1.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+    <script>
+   	 $(function(){
+      //获取预约列表
+      $.ajax({
+        type : "get",
+        url : "http://39.104.99.78:8666/institution/member/reserve/list",
+        data:{institutionId:1001},
+        success : function(obj) {
+        	$(".tbody").empty();
+	        for(var i = 0; i < obj.data.length; i++){
+	        var str = '<tr>'
+	          str += '<td>' + obj.data[i].name + '</td>'
+	          str += '<td>' + obj.data[i].age + '</td>'
+	          if(obj.data[i].gender == '1'){
+	          	str += '<td>男</td>'
+	          }else{
+	          	str += '<td>女</td>'
+	          }
+	          
+	          str += '<td>' + formatCSTDate(obj.data[i].reserveTime,'yyyy-MM-dd') + '</td>'
+	          if(obj.data[i].status == '1'){
+	          	str += '<td><a class="btn btn-info btn-sm" href="#" onclick="changeStatus(' + obj.data[i].reserveId + ')">到检</a></td>'
+	          }else if(obj.data[i].status == '2'){
+	          	 str += '<td>已到检</td>'
+	          }else if(obj.data[i].status == '3'){
+	          	 str += '<td>未到检</td>'
+	          }else{
+	          	 str += '<td>已过期</td>'
+	          }
+	         
+	          str += '</tr>'
+	         $(".tbody").append(str);
+	        }
+        }
+      });
+      
+   });
+
+   	 function changeStatus(reserveId){
+   	 	 $.ajax({
+        type : "post",
+        url : "http://39.104.99.78:8666/member/reserve/sign",
+        data:{reserveId:reserveId},
+        success : function(obj) {
+					alert("已到检");
+					window.location.reload()
+        }
+      });
+   	 }
+
+
+   	 //格式化CST日期的字串
+	function formatCSTDate(strDate,format){
+	  if(strDate == undefined || strDate == ''){
+		  return;
+	  }
+	  return formatDate(new Date(strDate),format);
+	}
+
+	//格式化日期
+	function formatDate(date,format){
+	  var paddNum = function(num){
+	    num += "";
+	    return num.replace(/^(\d)$/,"0$1");
+	  }
+	  //指定格式字符
+	  var cfg = {
+	     yyyy : date.getFullYear() //年 : 4位
+	    ,yy : date.getFullYear().toString().substring(2)//年 : 2位
+	    ,M  : date.getMonth() + 1  //月 : 如果1位的时候不补0
+	    ,MM : paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+	    ,d  : date.getDate()   //日 : 如果1位的时候不补0
+	    ,dd : paddNum(date.getDate())//日 : 如果1位的时候补0
+	    ,hh : date.getHours()  //时
+	    ,mm : date.getMinutes() //分
+	    ,ss : date.getSeconds() //秒
+	  }
+	  format || (format = "yyyy-MM-dd hh:mm:ss");
+	  return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
+	}
+    </script>
+	
+</html>

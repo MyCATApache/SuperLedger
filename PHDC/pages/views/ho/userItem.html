@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户检查列表</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div class="main" style="width: 90%;margin-left: 5%;margin-top: 5%">
+		<h2>用户检查列表</h2>
+		<table class="table table-hover">
+	  	<thead>
+		    <tr>
+		      <th scope="col">检查日期</th>
+		      <th scope="col">检查项目</th>
+		      <th scope="col">结果</th>
+		      <th scope="col">结论</th>
+		      <th scope="col">检查医生</th>
+		    </tr>
+		  </thead>
+		  <tbody class="tbody">
+		    <!-- <tr>
+		     <td>2018/02/02</td>
+		    		  	 <td>血压</td>
+		    		  	 <td>112/80</td>
+		    		  	 <td>正常</td>
+		    		  	 <td>李医生</td>
+		    		  	</tr>
+		    		   <tr>
+		     <td>2018/02/02</td>
+		    		  	 <td>血压</td>
+		    		  	 <td>112/80</td>
+		    		  	 <td>正常</td>
+		    		  	 <td>李医生</td>
+		    		  	</tr>
+		    		  	<tr>
+		     <td>2018/02/02</td>
+		    		  	 <td>血压</td>
+		    		  	 <td>112/80</td>
+		    		  	 <td>正常</td>
+		    		  	 <td>李医生</td>
+		    		  	</tr> -->
+		  </tbody>
+		</table>
+	</div>
+
+	</body>
+
+ 	<script src="../../js/jquery-3.1.1.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+    <script>
+  
+      $(function(){
+
+       var memberId = getQueryString("memberId");	
+      //获取该用户下的体检数据
+      $.ajax({
+        type : "get",
+        url : "http://39.104.99.78:8666/institution/member/exam/result/list",
+        data:{institutionId:1001,memberId:memberId},
+        success : function(obj) {
+        	$(".tbody").empty();
+	        for(var i = 0; i < obj.data.length; i++){
+	        var str = '<tr>'
+	          str += '<td>' + formatCSTDate(obj.data[i].checkDate,'yyyy-MM-dd') + '</td>'
+	          str += '<td>' + obj.data[i].dictionaryName + '</td>'
+	          str += '<td>' + obj.data[i].result + '</td>'
+	          str += '<td>' + obj.data[i].summary + '</td>'
+	          str += '<td>' + obj.data[i].checkDoctor + '</td>'
+	          str += '</tr>'
+	         $(".tbody").append(str);
+	        }
+        }
+      });
+    });
+
+   
+    //截取URL参数
+    function getQueryString(name) {
+    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURI(r[2]);
+    }
+    return null;
+	}
+
+
+	//格式化CST日期的字串
+	function formatCSTDate(strDate,format){
+	  if(strDate == undefined || strDate == ''){
+		  return;
+	  }
+	  return formatDate(new Date(strDate),format);
+	}
+
+	//格式化日期
+	function formatDate(date,format){
+	  var paddNum = function(num){
+	    num += "";
+	    return num.replace(/^(\d)$/,"0$1");
+	  }
+	  //指定格式字符
+	  var cfg = {
+	     yyyy : date.getFullYear() //年 : 4位
+	    ,yy : date.getFullYear().toString().substring(2)//年 : 2位
+	    ,M  : date.getMonth() + 1  //月 : 如果1位的时候不补0
+	    ,MM : paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+	    ,d  : date.getDate()   //日 : 如果1位的时候不补0
+	    ,dd : paddNum(date.getDate())//日 : 如果1位的时候补0
+	    ,hh : date.getHours()  //时
+	    ,mm : date.getMinutes() //分
+	    ,ss : date.getSeconds() //秒
+	  }
+	  format || (format = "yyyy-MM-dd hh:mm:ss");
+	  return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
+	}
+
+    </script>
+	
+</html>

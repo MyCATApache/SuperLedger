@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查看数据访问请求</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div class="main" style="width: 100%;margin-top: 5%">
+    	<div style="display: flex;justify-content: space-around;">
+    		<h5>查看数据访问请求</h5>
+    		<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal2" style="margin-top: 2%;margin-bottom: 2%">生成邀请ID</button>
+    	</div>
+		
+		<table class="table table-hover" style="font-size: 14px;">
+	  	<thead>
+		    <tr>
+		      <th scope="col">请求机构</th>
+		      <th scope="col">请求项</th>
+		      <th scope="col">状态</th>
+		      <th scope="col">请求日期</th>
+		    </tr>
+		  </thead>
+		  <tbody class="tbody">
+		   <!--  <tr>
+		   		  	 <td>保险公司A</td>
+		   		  	 <td>全年将康记录</td>
+		   		  	 <td><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal">允许</button></td>
+		   		  	 <td>2018/02/02</td>
+		   		  	</tr>
+		   		  	<tr>
+		   		  	 <td>保险公司B</td>
+		   		  	 <td>三年血糖变化</td>
+		   		  	 <td>已通过</td>
+		   		  	 <td>2018/02/02</td>
+		   		  	</tr>
+		   		  	<tr>
+		   		  	 <td>保险公司C</td>
+		   		  	 <td>三年血糖变化</td>
+		   		  	 <td>未通过</td>
+		   		  	 <td>2018/02/02</td>
+		   		  	</tr> -->
+		  </tbody>
+		</table>
+	</div>
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <input type="hidden" id="InviteID" />
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">用户授权</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        请授权给<span id="DUName"></span>访问全年健康记录
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="confirm()">确认</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">申请邀请ID</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	            <div>邀请ID为：4567</div>
+				<div>注意：邀请ID只在3分钟内有效</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	</body>
+
+ 	<script src="../../js/jquery-3.1.1.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+    <script>
+    $(function(){
+	      //读取健康数据列表
+	      window.obj.getInviteList('');
+	      // getInviteList();
+	   });
+
+
+    function getInviteList(){
+    	getInviteList_ret('[{"Ret":"ok", "InviteID":"5678", "DUName":"机构名称A", "PatternName":"请求项", "Status":"1", "Date":"2018/12/31"},{"Ret":"ok", "InviteID":"5678", "DUName":"机构名称B", "PatternName":"请求项", "Status":"2", "Date":"2018/12/31"},{"Ret":"ok", "InviteID":"5678", "DUName":"机构名称C", "PatternName":"请求项", "Status":"3", "Date":"2018/12/31"}]')
+    }
+
+
+     function getInviteList_ret(arg){
+
+				var jsonObject = JSON.parse(arg);
+				jsonObject = jsonObject.Data;
+
+        for(var i = 0; i < jsonObject.length; i++){
+          var str = ''
+           str += '<tr>'
+		      str += '<td>' + jsonObject[i].DUName + '</td>'
+		  	  str += '<td>' + jsonObject[i].PatternName + '</td>'
+		  	  if(jsonObject[i].Status == '1'){
+		  	  	str += '<td><button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#myModal" onclick="setInviteID(\''+ jsonObject[i].InviteID +'\',\''+ jsonObject[i].DUName +'\')">允许</button></td>'
+		  	  }else if(jsonObject[i].Status == '2'){
+		  	  	str += '<td>通过</td>'	
+		  	  }else{
+		  	  	str += '<td>拒绝</td>'
+		  	  }
+		  	  
+		  	  str += '<td>' + jsonObject[i].Date + '</td>'
+		  str += '</tr>'
+          $(".tbody").append(str);
+        }
+    }
+
+    function setInviteID(InviteID,DUName){
+    	$("#InviteID").val(InviteID);
+    	$("#DUName").text(DUName)
+    }
+
+
+
+    function confirm(){
+			arg = {"InviteID":$("#InviteID").val()}
+    	window.obj.accept(JSON.stringify(arg));
+    	
+    }
+
+
+    function accept_ret(temp) {
+    	alert(temp)
+        window.location.reload()
+    }
+
+
+
+    </script>
+	
+</html>

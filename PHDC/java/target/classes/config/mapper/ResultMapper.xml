@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.mycat.fabric.phdc.dao.mapper.ResultMapper">
+  <resultMap id="BaseResultMap" type="io.mycat.fabric.phdc.entity.Result">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="reserve_id" jdbcType="INTEGER" property="reserveId" />
+    <result column="member_id" jdbcType="INTEGER" property="memberId" />
+    <result column="exam_dict_id" jdbcType="INTEGER" property="examDictId" />
+    <result column="depart_doctor" jdbcType="VARCHAR" property="departDoctor" />
+    <result column="check_doctor" jdbcType="VARCHAR" property="checkDoctor" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="result" jdbcType="LONGVARCHAR" property="result" />
+    <result column="summary" jdbcType="LONGVARCHAR" property="summary" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>用户列表</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div class="main" style="width: 90%;margin-left: 5%">
+		
+    	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" style="margin-top: 2%;margin-bottom: 2%">邀请新用户</button>
+		<table class="table table-hover">
+	  	<thead>
+		    <tr>
+		      <th scope="col">用户ID</th>
+		      <th scope="col">姓名</th>
+		      <th scope="col">状态</th>
+		      <th scope="col">邀请日期</th>
+		    </tr>
+		  </thead>
+		  <tbody class="tbody">
+		    <!-- <tr>
+		    		  	 <td>0001</td>
+		    		  	 <td>黄飞</td>
+		    		  	 <td>等待批准</td>
+		    		  	 <td>2018/02/02</td>
+		    		  	</tr>
+		    		  	<tr>
+		    		  	 <td>0002</td>
+		    		  	 <td>赵锴</td>
+		    		  	 <td>等待批准</td>
+		    		  	 <td>2018/02/03</td>
+		    		  	</tr>
+		    		  	<tr>
+		    		  	 <td>0003</td>
+		    		  	 <td>詹应达</td>
+		    		  	 <td><a class="btn btn-info btn-sm" href="userDetail.html?userId=1">查看</a></td>
+		    		  	 <td>2018/02/03</td>
+		    		  	</tr> -->
+		  </tbody>
+		</table>
+	</div>
+
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">邀请新用户</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <!-- <input type="hidden" id="memberId"> -->
+	        <input type="text" class="form-control" id="userName" name="userName" value="" placeholder="用户姓名" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="text" class="form-control" id="tel" name="tel" value="" placeholder="用户手机号" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="text" class="form-control" id="inviteId" name="inviteId" value="" placeholder="邀请ID" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="next()">下一步</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">选择申请数据</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <input type="button" class="btn btn-info" value="全年健康记录" onclick="apply(6789)" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="button" class="btn btn-info" value="3年血糖变化" onclick="apply(6790)"  style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="button" class="btn btn-info" value="3年血脂变化" onclick="apply(6791)"  style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="button" class="btn btn-info" value="3年血压变化" onclick="apply(6792)"  style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	</body>
+
+ 	<script src="../../js/jquery-3.1.1.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+    <script>
+     $(function(){
+
+      //获取该用户下的体检数据
+      $.ajax({
+        type : "get",
+        url : "http://39.104.99.78:8666/client/member/invitation/list",
+        data:{memberId:4567},
+        success : function(obj) {
+        	$(".tbody").empty();
+	        for(var i = 0; i < obj.data.length; i++){
+	        var str = '<tr>'
+	          str += '<td>' + obj.data[i].memberId + '</td>'
+	          str += '<td>' + obj.data[i].name + '</td>'
+	          if(obj.data[i].status == '1'){
+	          	str += '<td>已生成</td>'
+	          }
+	          else if(obj.data[i].status == '2'){
+	          	str += '<td>已申请</td>'
+	          }
+	          else if(obj.data[i].status == '3'){
+	          	str += '<td>拒绝申请</td>'
+	          }
+	          else if(obj.data[i].status == '5'){
+	          	str += '<td>已过期</td>'
+	          }else{
+	          	str += '<td><a class="btn btn-info btn-sm" href="userDetail.html?invitationId=' + obj.data[i].invitationId + '">查看</a></td>'
+	          }
+	          
+	          str += '<td>' + formatCSTDate(obj.data[i].invitionDate,'yyyy-MM-dd') + '</td>'
+	          str += '</tr>'
+	         $(".tbody").append(str);
+	        }
+        }
+      });
+    });
+
+    function next(){
+    	if($('#userName').val() == ''){
+			alert('请输入用户名');
+			return;
+    	}
+    	if($('#tel').val() == ''){
+			alert('请输入用户手机号');
+			return;
+    	}
+    	if($('#inviteId').val() == ''){
+			alert('请输入邀请ID');
+			return;
+    	}
+
+    	$('#myModal').modal('hide');
+    	$('#myModal2').modal('show');
+    }
+
+    function apply(id){
+	    $.ajax({
+	        type : "post",
+	        url : "http://39.104.99.78:8666/client/member/invitation/access",
+	        //url : "http://localhost:8666/client/member/invitation/access",
+	        data:{
+	        	memberId:$('#inviteId').val(),
+	        	name:$('#userName').val(),
+	        	mobile:$('#tel').val(),
+	        	invitationCode:$('#inviteId').val(),
+	        	patternId:id
+	        },
+	        success : function(obj) {
+	        }
+	    });
+    	alert("申请已经提交，请通知用户在48小时内通过申请。")
+    }
+
+
+    //格式化CST日期的字串
+	function formatCSTDate(strDate,format){
+	  if(strDate == undefined || strDate == ''){
+		  return;
+	  }
+	  return formatDate(new Date(strDate),format);
+	}
+
+	//格式化日期
+	function formatDate(date,format){
+	  var paddNum = function(num){
+	    num += "";
+	    return num.replace(/^(\d)$/,"0$1");
+	  }
+	  //指定格式字符
+	  var cfg = {
+	     yyyy : date.getFullYear() //年 : 4位
+	    ,yy : date.getFullYear().toString().substring(2)//年 : 2位
+	    ,M  : date.getMonth() + 1  //月 : 如果1位的时候不补0
+	    ,MM : paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+	    ,d  : date.getDate()   //日 : 如果1位的时候不补0
+	    ,dd : paddNum(date.getDate())//日 : 如果1位的时候补0
+	    ,hh : date.getHours()  //时
+	    ,mm : date.getMinutes() //分
+	    ,ss : date.getSeconds() //秒
+	  }
+	  format || (format = "yyyy-MM-dd hh:mm:ss");
+	  return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
+	}
+
+    </script>
+	
+</html>

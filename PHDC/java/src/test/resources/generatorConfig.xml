@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <!-- 引入 application.properties -->
+    <!--<properties resource="application.properties" />-->
+
+    <!-- MyBatis3Simple：不生成 Example相关类及方法 -->
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+    <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>  
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"></plugin> 
+         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin> 
+        <commentGenerator>
+            <!-- This property is used to specify whether MBG will include any coments
+                in the generated code -->
+            <property name="suppressAllComments" value="true" />
+            <!-- This property is used to specify whether MBG will include the generation
+                timestamp in the generated comments -->
+            <property name="suppressDate" value="true" />
+        </commentGenerator>
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://39.104.99.78:3306/phdc?useSSL=false" userId="root"
+                        password="******" />
+
+        <javaTypeResolver>
+            <!-- This property is used to specify whether MyBatis Generator should
+                force the use of java.math.BigDecimal for DECIMAL and NUMERIC fields, rather
+                than substituting integral types when possible -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- E:\workspace\eis\eis-server\eis-common\src\main\java -->	<!-- D:\java\workspace\enetic\eis\eis-common\src\main\java -->		<!-- E:\develop\workspace\eis\eis-common\src\main\java -->
+        <javaModelGenerator targetPackage="io.mycat.fabric.phdc.entity"
+                            targetProject="src/main/java">
+
+            <!-- D:\workspace\shenzhou\shenzhou-common\src\main\java -->
+            <!-- D:\java\workspace\enetic\eis -->
+
+            <!-- This property is used to select whether MyBatis Generator will generate
+                different Java packages for the objects based on the catalog and schema of
+                the introspected table -->
+            <property name="enableSubPackages" value="false" />
+            <!-- This property is used to select whether MyBatis Generator adds code
+                to trim the white space from character fields returned from the database -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+
+        <!-- E:\workspace\eis\eis-server\eis-common\src\main\resources -->
+        <sqlMapGenerator targetPackage="config.mapper"
+                         targetProject="src/main/resources">
+
+            <!-- This property is used to select whether MyBatis Generator will generate
+                different Java packages for the objects based on the catalog and schema of
+                the introspected table -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- E:\workspace\eis\eis-server\eis-common\src\main\java -->
+        <javaClientGenerator targetPackage="io.mycat.fabric.phdc.dao.mapper"
+                             targetProject="src/main/java" type="XMLMAPPER">
+            <!-- This property is used to select whether MyBatis Generator will generate
+                different Java packages for the objects based on the catalog and schema of
+                the introspected table -->
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <!-- Mysql 配置 -->
+        <!-- <generatedKey column="id" sqlStatement="Mysql" identity="true" /> -->
+        <!-- Oracle 配置 -->
+        <!-- <generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/> -->
+
+        <!-- tableName：数据库表名，domainObjectName：生成文件名 ，schema：数据源-->
+
+        <!--<table tableName="tbl_app_info" domainObjectName="AppInfo">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>-->
+        
+		<!-- <table tableName="tb_institution_dictionary" domainObjectName="InstitutionDictionary">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table> -->
+        <!-- <table tableName="tb_institution_depart" domainObjectName="InstitutionDepart">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table> -->
+		<!-- <table tableName="tb_institution" domainObjectName="Institution">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="tb_member" domainObjectName="Member">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="tb_member_invitation" domainObjectName="MemberInvitation">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table> -->
+        <!-- <table tableName="tb_report" domainObjectName="Report">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table> -->
+        <!--<table tableName="tb_reserve" domainObjectName="Reserve">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table>
+        <table tableName="tb_result" domainObjectName="Result">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+        </table> -->
+    </context>
+</generatorConfiguration>

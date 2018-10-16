@@ -1,0 +1,181 @@
+2018-09-03 00:08:41.630 [main] 9258 WARN  org.hyperledger.fabric.sdk.helper.Config[110] - Failed to load any configuration from: config.properties. Using toolkit defaults
+2018-09-03 00:08:41.778 [main] 9406 WARN  org.hyperledger.fabric_ca.sdk.helper.Config[78] - Failed to load any configuration from: config.properties. Using toolkit defaults
+2018-09-03 00:08:54.490 [main] 22118 INFO  ChainCodeManager[58] - =============================================================
+2018-09-03 00:08:54.491 [main] 22119 INFO  ChainCodeManager[67] - CA name: client
+2018-09-03 00:08:54.492 [main] 22120 INFO  ChainCodeManager[68] - CA version: 1.2.0
+2018-09-03 00:08:54.492 [main] 22120 INFO  ChainCodeManager[72] - Going to enroll user: DUOUser1
+2018-09-03 00:09:00.898 [main] 28526 INFO  ChainCodeManager[74] - Enroll user: DUOUser1 successfully.
+2018-09-03 00:09:52.206 [grpc-default-executor-0] 79834 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer1.duo.aliyunbaas.com:31311 (grpcs://peer1.duo.aliyunbaas.com:31313)
+2018-09-03 00:09:52.346 [grpc-default-executor-1] 79974 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer2.duo.aliyunbaas.com:31321 (grpcs://peer2.duo.aliyunbaas.com:31323)
+2018-09-03 00:09:53.448 [pool-7-thread-1] 81076 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer2.duo.aliyunbaas.com:31321 url: grpcs://peer2.duo.aliyunbaas.com:31321
+2018-09-03 00:09:53.627 [pool-5-thread-1] 81255 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer1.duo.aliyunbaas.com:31311 url: grpcs://peer1.duo.aliyunbaas.com:31311
+2018-09-03 00:09:57.207 [main] 84835 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer2.uo.aliyunbaas.com:31121 failed because of timeout(6000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:10:03.328 [main] 90956 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer1.duo.aliyunbaas.com:31311 failed because of timeout(6000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:10:09.333 [main] 96961 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer1.uo.aliyunbaas.com:31111 failed because of timeout(6000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:10:40.800 [grpc-default-executor-1] 128428 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer2.duo.aliyunbaas.com:31321 (grpcs://peer2.duo.aliyunbaas.com:31323)
+2018-09-03 00:10:40.804 [grpc-default-executor-6] 128432 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer1.duo.aliyunbaas.com:31311 (grpcs://peer1.duo.aliyunbaas.com:31313)
+2018-09-03 00:10:41.382 [pool-13-thread-1] 129010 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer2.uo.aliyunbaas.com:31121 url: grpcs://peer2.uo.aliyunbaas.com:31121
+2018-09-03 00:10:41.418 [grpc-default-executor-6] 129046 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:10:45.773 [grpc-default-executor-5] 133401 INFO  org.hyperledger.fabric.sdk.PeerEventServiceClient[230] - Peer eventing service reconnected after 2 attempts on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111
+2018-09-03 00:10:46.007 [pool-5-thread-1] 133635 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer2.duo.aliyunbaas.com:31321 url: grpcs://peer2.duo.aliyunbaas.com:31321
+2018-09-03 00:10:46.015 [pool-9-thread-1] 133643 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer1.uo.aliyunbaas.com:31111 url: grpcs://peer1.uo.aliyunbaas.com:31111
+2018-09-03 00:10:46.023 [pool-8-thread-1] 133651 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer1.duo.aliyunbaas.com:31311 url: grpcs://peer1.duo.aliyunbaas.com:31311
+2018-09-03 00:10:46.053 [pool-8-thread-1] 133681 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer2.uo.aliyunbaas.com:31121 url: grpcs://peer2.uo.aliyunbaas.com:31121
+2018-09-03 00:10:57.661 [grpc-default-executor-5] 145289 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:10:57.661 [grpc-default-executor-6] 145289 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:11:09.220 [grpc-default-executor-5] 156848 INFO  org.hyperledger.fabric.sdk.PeerEventServiceClient[230] - Peer eventing service reconnected after 2 attempts on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121
+2018-09-03 00:11:09.220 [pool-9-thread-1] 156848 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer2.uo.aliyunbaas.com:31121 url: grpcs://peer2.uo.aliyunbaas.com:31121
+2018-09-03 00:11:09.224 [grpc-default-executor-5] 156852 INFO  org.hyperledger.fabric.sdk.PeerEventServiceClient[230] - Peer eventing service reconnected after 2 attempts on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111
+2018-09-03 00:11:09.224 [pool-9-thread-1] 156852 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer1.uo.aliyunbaas.com:31111 url: grpcs://peer1.uo.aliyunbaas.com:31111
+2018-09-03 00:11:09.259 [pool-9-thread-1] 156887 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer1.uo.aliyunbaas.com:31111 url: grpcs://peer1.uo.aliyunbaas.com:31111
+2018-09-03 00:11:09.259 [pool-9-thread-1] 156887 INFO  ChainCodeManager[76] - Receive block event (number 48) from Peer peer2.uo.aliyunbaas.com:31121 url: grpcs://peer2.uo.aliyunbaas.com:31121
+2018-09-03 00:11:12.789 [pool-11-thread-1] 160417 INFO  ChainCodeManager[76] - Receive block event (number 49) from null
+2018-09-03 00:11:12.790 [pool-13-thread-1] 160418 INFO  ChainCodeManager[76] - Receive block event (number 49) from Peer peer2.duo.aliyunbaas.com:31321 url: grpcs://peer2.duo.aliyunbaas.com:31321
+2018-09-03 00:12:11.069 [grpc-default-executor-8] 218697 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111, attempts 1. UNAVAILABLE: Network closed for unknown reason
+2018-09-03 00:12:11.069 [grpc-default-executor-12] 218697 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer1.duo.aliyunbaas.com:31311 (grpcs://peer1.duo.aliyunbaas.com:31313)
+2018-09-03 00:12:16.733 [main] 504  WARN  org.hyperledger.fabric.sdk.helper.Config[110] - Failed to load any configuration from: config.properties. Using toolkit defaults
+2018-09-03 00:12:16.756 [main] 527  WARN  org.hyperledger.fabric_ca.sdk.helper.Config[78] - Failed to load any configuration from: config.properties. Using toolkit defaults
+2018-09-03 00:12:17.724 [main] 1495 INFO  ChainCodeManager[58] - =============================================================
+2018-09-03 00:12:17.725 [main] 1496 INFO  ChainCodeManager[67] - CA name: client
+2018-09-03 00:12:17.725 [main] 1496 INFO  ChainCodeManager[68] - CA version: 1.2.0
+2018-09-03 00:12:17.725 [main] 1496 INFO  ChainCodeManager[72] - Going to enroll user: DUOUser1
+2018-09-03 00:12:18.135 [main] 1906 INFO  ChainCodeManager[74] - Enroll user: DUOUser1 successfully.
+2018-09-03 00:12:29.178 [grpc-default-executor-1] 12949 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:12:29.249 [grpc-default-executor-1] 13020 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.duo.aliyunbaas.com:31311, url grpcs://peer1.duo.aliyunbaas.com:31311, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:12:34.260 [grpc-default-executor-1] 18031 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.duo.aliyunbaas.com:31311, url grpcs://peer1.duo.aliyunbaas.com:31311, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:12:39.271 [grpc-default-executor-1] 23042 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:12:40.293 [main] 24064 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer2.uo.aliyunbaas.com:31121 failed because of timeout(6000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:12:46.308 [main] 30079 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer1.duo.aliyunbaas.com:31311 failed because of timeout(6000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:12:52.312 [main] 36083 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer1.uo.aliyunbaas.com:31111 failed because of timeout(6000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:13:48.219 [main] 481  WARN  org.hyperledger.fabric.sdk.helper.Config[110] - Failed to load any configuration from: config.properties. Using toolkit defaults
+2018-09-03 00:13:48.244 [main] 506  WARN  org.hyperledger.fabric_ca.sdk.helper.Config[78] - Failed to load any configuration from: config.properties. Using toolkit defaults
+2018-09-03 00:13:48.913 [main] 1175 INFO  ChainCodeManager[58] - =============================================================
+2018-09-03 00:13:48.914 [main] 1176 INFO  ChainCodeManager[67] - CA name: client
+2018-09-03 00:13:48.914 [main] 1176 INFO  ChainCodeManager[68] - CA version: 1.2.0
+2018-09-03 00:13:48.914 [main] 1176 INFO  ChainCodeManager[72] - Going to enroll user: DUOUser1
+2018-09-03 00:13:49.326 [main] 1588 INFO  ChainCodeManager[74] - Enroll user: DUOUser1 successfully.
+2018-09-03 00:14:00.416 [grpc-default-executor-1] 12678 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:14:00.463 [grpc-default-executor-1] 12725 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.duo.aliyunbaas.com:31311, url grpcs://peer1.duo.aliyunbaas.com:31311, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:14:05.474 [grpc-default-executor-1] 17736 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.duo.aliyunbaas.com:31311, url grpcs://peer1.duo.aliyunbaas.com:31311, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:14:05.474 [grpc-default-executor-0] 17736 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:14:10.485 [grpc-default-executor-0] 22747 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer1.uo.aliyunbaas.com:31111, url grpcs://peer1.uo.aliyunbaas.com:31111, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:14:34.451 [grpc-default-executor-3] 46713 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer1.duo.aliyunbaas.com:31311 (grpcs://peer1.duo.aliyunbaas.com:31313)
+2018-09-03 00:14:34.451 [grpc-default-executor-2] 46713 WARN  org.hyperledger.fabric.sdk.EventHub[449] - Channel drc detected disconnect on event hub EventHub:peer2.duo.aliyunbaas.com:31321 (grpcs://peer2.duo.aliyunbaas.com:31323)
+2018-09-03 00:14:35.505 [main] 47767 ERROR org.hyperledger.fabric.sdk.Channel[3605] - Sending proposal to peer2.uo.aliyunbaas.com:31121 failed because of timeout(30000 milliseconds) expiration
+java.util.concurrent.TimeoutException: null
+	at com.google.common.util.concurrent.AbstractFuture.get(AbstractFuture.java:432)
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3588)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+2018-09-03 00:14:49.610 [main] 61872 ERROR org.hyperledger.fabric.sdk.Channel[3619] - Sending proposal to peer1.duo.aliyunbaas.com:31311 failed because of: gRPC failure=Status{code=UNAVAILABLE, description=Network closed for unknown reason, cause=null}
+java.lang.Exception: io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3619)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+Caused by: io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asRuntimeException(Status.java:526)
+	at io.grpc.stub.ClientCalls$UnaryStreamToFuture.onClose(ClientCalls.java:468)
+	at io.grpc.PartialForwardingClientCallListener.onClose(PartialForwardingClientCallListener.java:39)
+	at io.grpc.ForwardingClientCallListener.onClose(ForwardingClientCallListener.java:23)
+	at io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener.onClose(ForwardingClientCallListener.java:40)
+	at io.grpc.internal.CensusStatsModule$StatsClientInterceptor$1$1.onClose(CensusStatsModule.java:684)
+	at io.grpc.PartialForwardingClientCallListener.onClose(PartialForwardingClientCallListener.java:39)
+	at io.grpc.ForwardingClientCallListener.onClose(ForwardingClientCallListener.java:23)
+	at io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener.onClose(ForwardingClientCallListener.java:40)
+	at io.grpc.internal.CensusTracingModule$TracingClientInterceptor$1$1.onClose(CensusTracingModule.java:403)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:459)
+	at io.grpc.internal.ClientCallImpl.access$300(ClientCallImpl.java:63)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl.close(ClientCallImpl.java:546)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl.access$600(ClientCallImpl.java:467)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:584)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:123)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+2018-09-03 00:14:50.943 [grpc-default-executor-2] 63205 INFO  org.hyperledger.fabric.sdk.PeerEventServiceClient[230] - Peer eventing service reconnected after 11 attempts on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121
+2018-09-03 00:14:51.211 [grpc-default-executor-2] 63473 INFO  org.hyperledger.fabric.sdk.PeerEventServiceClient[230] - Peer eventing service reconnected after 10 attempts on channel drc, peer peer1.duo.aliyunbaas.com:31311, url grpcs://peer1.duo.aliyunbaas.com:31311
+2018-09-03 00:14:56.261 [grpc-default-executor-3] 68523 WARN  org.hyperledger.fabric.sdk.PeerEventServiceClient[262] - Received error on peer eventing service on channel drc, peer peer2.uo.aliyunbaas.com:31121, url grpcs://peer2.uo.aliyunbaas.com:31121, attempts 1. UNAVAILABLE: Channel shutdownNow invoked
+2018-09-03 00:15:11.684 [main] 83946 ERROR org.hyperledger.fabric.sdk.Channel[3619] - Sending proposal to peer1.uo.aliyunbaas.com:31111 failed because of: gRPC failure=Status{code=UNAVAILABLE, description=Network closed for unknown reason, cause=null}
+java.lang.Exception: io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at org.hyperledger.fabric.sdk.Channel.sendProposalToPeers(Channel.java:3619)
+	at org.hyperledger.fabric.sdk.Channel.sendProposal(Channel.java:3515)
+	at org.hyperledger.fabric.sdk.Channel.sendTransactionProposal(Channel.java:3398)
+	at io.mycat.fabric.phdc.bass.ChaincodeExecutor.executeTransaction(ChaincodeExecutor.java:74)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.invite(DRCChainCodeManager.java:79)
+	at io.mycat.fabric.phdc.bass.DRCChainCodeManager.main(DRCChainCodeManager.java:93)
+Caused by: io.grpc.StatusRuntimeException: UNAVAILABLE: Network closed for unknown reason
+	at io.grpc.Status.asRuntimeException(Status.java:526)
+	at io.grpc.stub.ClientCalls$UnaryStreamToFuture.onClose(ClientCalls.java:468)
+	at io.grpc.PartialForwardingClientCallListener.onClose(PartialForwardingClientCallListener.java:39)
+	at io.grpc.ForwardingClientCallListener.onClose(ForwardingClientCallListener.java:23)
+	at io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener.onClose(ForwardingClientCallListener.java:40)
+	at io.grpc.internal.CensusStatsModule$StatsClientInterceptor$1$1.onClose(CensusStatsModule.java:684)
+	at io.grpc.PartialForwardingClientCallListener.onClose(PartialForwardingClientCallListener.java:39)
+	at io.grpc.ForwardingClientCallListener.onClose(ForwardingClientCallListener.java:23)
+	at io.grpc.ForwardingClientCallListener$SimpleForwardingClientCallListener.onClose(ForwardingClientCallListener.java:40)
+	at io.grpc.internal.CensusTracingModule$TracingClientInterceptor$1$1.onClose(CensusTracingModule.java:403)
+	at io.grpc.internal.ClientCallImpl.closeObserver(ClientCallImpl.java:459)
+	at io.grpc.internal.ClientCallImpl.access$300(ClientCallImpl.java:63)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl.close(ClientCallImpl.java:546)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl.access$600(ClientCallImpl.java:467)
+	at io.grpc.internal.ClientCallImpl$ClientStreamListenerImpl$1StreamClosed.runInContext(ClientCallImpl.java:584)
+	at io.grpc.internal.ContextRunnable.run(ContextRunnable.java:37)
+	at io.grpc.internal.SerializingExecutor.run(SerializingExecutor.java:123)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)

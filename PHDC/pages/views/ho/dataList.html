@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据管理</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div class="main" style="width: 90%;margin-left: 5%;margin-top: 5%">
+        <input type="hidden" id="resultId"/>
+        <input type="hidden" id="rowIndex"/>
+		<h2>数据管理</h2>
+		<table class="table table-hover">
+	  	<thead>
+		    <tr>
+		      <th scope="col">检查日期</th>
+		      <th scope="col">年龄</th>
+		      <th scope="col">性别</th>
+		      <th scope="col">检查项目</th>
+		      <th scope="col">结果</th>
+		      <th scope="col">检查医生</th>
+		      <th scope="col">结论</th>
+		      <th scope="col">科室医生</th>
+		    </tr>
+		  </thead>
+		  <tbody class="tbody">
+		    <!-- <tr>
+		    		  	 <td>2018/02/02</td>
+		    		  	 <td>30</td>
+		    		  	 <td>男</td>
+		    		  	 <td>甘油三酯</td>
+		    		  	 <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="getResultId('1')">输入结果</button></td>
+		    		  	 <td>李医生</td>
+		    		  	 <td><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">输入结论</button></td>
+		    		  	 <td>张医生</td>
+		    		  	</tr>
+		    		  	<tr>
+		    		  	 <td>2018/02/02</td>
+		    		  	 <td>30</td>
+		    		  	 <td>男</td>
+		    		  	 <td>甘油三酯</td>
+		    		  	 <td></td>
+		    		  	 <td>李医生</td>
+		    		  	 <td>正常</td>
+		    		  	 <td>张医生</td>
+		    		  	</tr> -->
+		  </tbody>
+		</table>
+	</div>
+
+   <!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">输入结果</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <input type="text" class="form-control" id="result" name="result" value="" placeholder="结果" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="text" class="form-control" id="checkDoctor" name="checkDoctor" value="" placeholder="检查医生" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="submitResult()">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">输入结论</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <input type="text" class="form-control" id="summary" name="summary" value="" placeholder="结论" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	        <input type="text" class="form-control" id="departDoctor" name="departDoctor" value="" placeholder="科室医生" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+	        <button type="button" class="btn btn-primary" onclick="submitSummary()">确定</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	</body>
+
+ 	<script src="../../js/jquery-3.1.1.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+    <script>
+    $(function(){
+      //获取该用户下的体检数据
+      $.ajax({
+        type : "get",
+        url : "http://39.104.99.78:8666/institution/member/exam/list",
+        data:{institutionId:1001},
+        success : function(obj) {
+        	$(".tbody").empty();
+	        for(var i = 0; i < obj.data.length; i++){
+	        var str = '<tr>'
+	          str += '<td>' + formatCSTDate(obj.data[i].checkDate,'yyyy-MM-dd') + '</td>'
+	          str += '<td>' + obj.data[i].age + '</td>'
+	          str += '<td>' + (obj.data[i].gender == '1' ? '男' : '女') + '</td>'
+	          str += '<td>' + obj.data[i].dictionaryName + '</td>'
+	          if(obj.data[i].result == undefined || obj.data[i].result == ''){
+	          	str += ' <td class="resultDiv"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal" onclick="getResultId(' + obj.data[i].resultId + ',' + i + ')">输入结果</button></td>'
+	          }else{
+	          	str += '<td>' + obj.data[i].result + '</td>'
+	          }
+	          str += '<td class="checkDoctorDiv">' + obj.data[i].checkDoctor + '</td>'
+	          if(obj.data[i].summary == undefined || obj.data[i].summary == ''){
+	          	str += ' <td class="summaryDiv"><button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal2" onclick="getResultId(' + obj.data[i].resultId + ',' + i + ')">输入结论</button></td>'
+	          }else{
+	          	str += '<td>' + obj.data[i].summary + '</td>'
+	          }
+	          str += '<td class="departDoctorDiv">' + obj.data[i].departDoctor + '</td>'
+	          str += '</tr>'
+	         $(".tbody").append(str);
+	        }
+        }
+      });
+    });
+
+    function getResultId(resultId,rowIndex){
+    	$("#resultId").val(resultId);
+    	$("#rowIndex").val(rowIndex);
+    }
+
+    function submitResult(){
+    $.ajax({
+        type : "post",
+        url : "http://39.104.99.78:8666/institution/member/exam/result",
+        //url : "http://localhost:8666/institution/member/exam/result",
+        data:{
+        	resultId:$("#resultId").val(),
+	        result:$("#result").val(),
+	        checkDoctor:$("#checkDoctor").val()
+	    },
+        success : function(obj) {
+        	//$(".tbody tr").eq($("#rowIndex").val()).find(".resultDiv").text($("#result").val());
+        	//$(".tbody tr").eq($("#rowIndex").val()).find(".checkDoctorDiv").text($("#checkDoctor").val());
+        	alert("保存成功");
+        	window.location.reload();
+        }
+      });
+    }
+
+
+    function submitSummary(){
+    $.ajax({
+        type : "post",
+        url : "http://39.104.99.78:8666/institution/member/exam/summary",
+        //url : "http://localhost:8666/institution/member/exam/summary",
+        data:{
+        	resultId:$("#resultId").val(),
+	        summary:$("#summary").val(),
+	        departDoctor:$("#departDoctor").val()
+	    },
+        success : function(obj) {
+        	//$(".tbody tr").eq($("#rowIndex").val()).find(".summaryDiv").text($("#summary").val());
+        	//$(".tbody tr").eq($("#rowIndex").val()).find(".departDoctorDiv").text($("#departDoctor").val());
+        	alert("保存成功");
+        	window.location.reload();
+        }
+      });
+    }
+
+
+
+    //格式化CST日期的字串
+	function formatCSTDate(strDate,format){
+	  if(strDate == undefined || strDate == ''){
+		  return;
+	  }
+	  return formatDate(new Date(strDate),format);
+	}
+
+	//格式化日期
+	function formatDate(date,format){
+	  var paddNum = function(num){
+	    num += "";
+	    return num.replace(/^(\d)$/,"0$1");
+	  }
+	  //指定格式字符
+	  var cfg = {
+	     yyyy : date.getFullYear() //年 : 4位
+	    ,yy : date.getFullYear().toString().substring(2)//年 : 2位
+	    ,M  : date.getMonth() + 1  //月 : 如果1位的时候不补0
+	    ,MM : paddNum(date.getMonth() + 1) //月 : 如果1位的时候补0
+	    ,d  : date.getDate()   //日 : 如果1位的时候不补0
+	    ,dd : paddNum(date.getDate())//日 : 如果1位的时候补0
+	    ,hh : date.getHours()  //时
+	    ,mm : date.getMinutes() //分
+	    ,ss : date.getSeconds() //秒
+	  }
+	  format || (format = "yyyy-MM-dd hh:mm:ss");
+	  return format.replace(/([a-z])(\1)*/ig,function(m){return cfg[m];});
+	}
+
+
+    </script>
+	
+</html>

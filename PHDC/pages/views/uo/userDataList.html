@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查看数据</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <div class="main" style="width: 90%;margin-left: 5%;margin-top: 5%">
+		<h5>查看数据</h5>
+		<table class="table table-hover" style="font-size: 14px;">
+	  	<thead>
+		    <tr>
+		      <th scope="col">检查机构</th>
+		      <th scope="col">检查项目</th>
+		      <th scope="col">结果</th>
+		      <th scope="col">结论</th>
+		      <th scope="col">检查日期</th>
+		    </tr>
+		  </thead>
+		  <tbody class="tbody">
+		  </tbody>
+		</table>
+	</div>
+
+	</body>
+
+ 	<script src="../../js/jquery-3.1.1.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+    <script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+    <script>
+	  $(function(){
+			var ivtID = window.obj.getItem("ivtID")
+			if (ivtID) {
+				console.log("ivtID : "+ivtID)
+				$.ajax({
+						type : "get",
+						url : "http://39.104.99.78:8666/member/reserve/exam/result",
+						data : {
+							id : ivtID
+						},
+						success : function(obj, textStatus){
+							alert(JSON.stringify(obj))
+							if (obj.data) {
+									var jobj =  {"InstID":"1001", "DepartID":obj.data.departId.toString(), "ItemID":obj.data.departId.toString()}
+									var args = JSON.stringify(jobj)
+									console.log("putIndex1 : "+args)
+									putIndex(args)
+									jobj =  {"InstID":"1001", "DepartID":(obj.data.departId+1).toString(), "ItemID":(obj.data.departId+1).toString()}
+									args = JSON.stringify(jobj)
+									console.log("putIndex2 : "+args)
+									putIndex(args)
+							} else {
+							    getDataList();
+							}
+						},
+						error : function(jqXHR, textStatus, errorThrown) {
+							alert(textStatus)
+						}
+				})
+			} else {
+	      //读取健康数据列表
+	      getDataList();
+			}
+
+
+	   });
+
+	  function getDataList(){
+			window.obj.getDataList('');
+	  	// getDataList_ret('{"Ret":"ok", "Data":[{"InstName":"机构名称A", "ItemName":"检查项A", "Result":"结果", "Conclusion":"结论", "Date":"2018/02/02"},{"InstName":"机构名称B", "ItemName":"检查项B", "Result":"结果", "Conclusion":"结论", "Date":"2018/02/02"}]}');
+	  }
+
+	  function getDataList_ret(arg){
+        var jsonObject = JSON.parse(arg);
+        console.log(jsonObject.Data)
+        for(var i = 0; i < jsonObject.Data.length; i++){
+          var str = ''
+           str += '<tr>'
+		      str += '<td>' + jsonObject.Data[i].InstName + '</td>'
+		  	  str += '<td>' + jsonObject.Data[i].ItemName + '</td>'
+		  	  str += '<td>' + jsonObject.Data[i].Result + '</td>'
+		  	  str += '<td>' + jsonObject.Data[i].Conclusion + '</td>'
+		  	  str += '<td>' + jsonObject.Data[i].Date + '</td>'
+		  str += '</tr>'
+          $(".tbody").append(str);
+        }
+	  }
+		
+		function putIndex(arg) {
+			window.obj.putIndex(arg);
+		}
+
+		function putIndex_ret(str) {
+
+			var obj = JSON.parse(str)
+			if (obj.Ret == "ok") {
+				if (window.obj.getItem("ivtID")) {
+					alert(str)
+					window.obj.removeItem("ivtID")
+					getDataList();
+				}
+				
+			} else {
+				alert(str)
+			}
+			
+		}
+
+
+    </script>
+	
+</html>

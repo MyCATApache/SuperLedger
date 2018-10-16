@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">  
+	<contextName>phdc</contextName>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">   
+	    <!-- encoder 默认配置为PatternLayoutEncoder -->   	    
+	    <encoder>   
+	      <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-4relative %-5level %logger[%L] - %msg%n</pattern>  
+	    </encoder>   
+  </appender> 
+
+
+  <appender name="SystemAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+      <file>./logs/system.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+      <fileNamePattern>./logs/system.%d{yyyy-MM-dd}.log</fileNamePattern>   
+      <!-- <maxHistory>30</maxHistory> -->    <!-- 日志保留天数  -->
+    </rollingPolicy>   
+    <encoder>   
+       <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-4relative %-5level %logger[%L] - %msg%n</pattern> 
+    </encoder>  
+  </appender> 
+ 
+
+ <appender name="DatabaseAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+      <file>./logs/database.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+      <fileNamePattern>./logs/database.%d{yyyy-MM-dd}.log</fileNamePattern>   
+      <!-- <maxHistory>30</maxHistory> -->    <!-- 日志保留天数  -->
+    </rollingPolicy>
+   
+    <encoder>   
+      <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-4relative %-5level %logger[%L] - %msg%n</pattern>
+    </encoder>  
+  </appender>
+
+  <appender name="console" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+      <file>./logs/console.log</file>
+       <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">   
+      <fileNamePattern>./logs/console.%d{yyyy-MM-dd}.log</fileNamePattern>   
+      <!-- <maxHistory>30</maxHistory> -->    <!-- 日志保留天数  -->
+    </rollingPolicy>     
+    <encoder>   
+      <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-4relative %-5level %logger[%L] - %msg%n</pattern>
+    </encoder>  
+  </appender>
+
+
+<!-- logger Sample begin -->
+<!--   <logger name="packageName" level="INFO" additivity="true">  --> 
+   <!--  <appender-ref ref="STDOUT"/>   --> <!-- 指定appender -->
+ <!--  </logger>   --> 
+<!-- logger Sample end -->
+
+	<logger name="com.fl21" level="debug">
+		<appender-ref ref="SystemAppender" />		
+	</logger>
+
+	<logger name="druid.sql" level="debug">		 
+		<appender-ref ref="DatabaseAppender" />		
+	</logger>
+	
+	<logger name="com.alibaba.druid" level="debug">		 
+		<appender-ref ref="DatabaseAppender" />		
+	</logger>
+	<root level="info">             
+    	 <appender-ref ref="STDOUT" />  
+    	<appender-ref ref="console" />        	
+	</root>
+
+</configuration>  

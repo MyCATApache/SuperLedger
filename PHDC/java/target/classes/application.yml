@@ -1,0 +1,33 @@
+server:
+  port: 8666
+
+spring:
+  profiles:
+    active: dev
+  application:
+      name: PHDCApplication
+  datasource: 
+    driver-class-name: com.mysql.jdbc.Driver
+    password: ******
+    url: "jdbc:mysql://39.104.99.78:3306/phdc?autoReconnect=true&initialTimeout=3&useUnicode=true&characterEncoding=utf-8&useSSL=false"
+    username: root
+mapper: 
+  identity: MYSQL
+  mappers: tk.mybatis.mapper.common.Mapper
+  not-empty: false
+mybatis: 
+  configuration: 
+    default-statement-timeout: 300
+    mapUnderscoreToCamelCase: true
+  mapper-locations: "classpath*:config/mapper/*.xml"
+  type-aliases-package: io.mycat.fabric.phdc.entity
+pagehelper: 
+  helperDialect: mysql
+  params: count=countSql
+  reasonable: true
+  supportMethodsArguments: true
+logging:
+  level:
+    ROOT: INFO
+    io.mycat.fabric: debug
+  config: "classpath:logback.xml"

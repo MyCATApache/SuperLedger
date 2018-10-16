@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>客户端首页</title>
+    <link rel="stylesheet" href="../../bootstrap-4.0.0-dist/css/bootstrap.css">
+</head>
+
+<body>
+    <input type="hidden" id="departID"/>
+    <div class="main" style="width: 40%;margin-left: 20%;margin-top: 20%;">
+        <!-- <div><button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="margin-top: 2%;margin-bottom: 2%;width: 200px;">体检中心A</button></div>
+        <div><button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="margin-top: 2%;margin-bottom: 2%;width: 200px;">体检中心B</button></div>
+        <div><button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="margin-top: 2%;margin-bottom: 2%;width: 200px;">体检中心C</button></div> -->
+	  </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">输入个人信息</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input type="text" class="form-control" id="userName" name="userName" value="" placeholder="用户姓名" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+            <input type="text" class="form-control" id="tel" name="tel" value="" placeholder="用户手机号" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+            <input type="text" class="form-control" id="birthday" name="birthday" value="" placeholder="出生日期" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+            <select class="form-control" id="sex" name="sex" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+              <option value="1">男</option>
+              <option value="2">女</option>
+            </select>
+            
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" onclick="next()">下一步</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">选择预约项目</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body departs_div">
+          <!-- <input type="button" class="btn btn-info" value="血糖" onclick="apply()"  style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+          <input type="button" class="btn btn-info" value="血脂" onclick="apply()"  style="width: 60%;margin-left: 20%;margin-bottom:10px;"> -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">选择预约日期</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="text" class="form-control" id="reservationDay" name="reservationDay" value="" placeholder="选择预约日期" style="width: 60%;margin-left: 20%;margin-bottom:10px;">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" onclick="submit()">提交</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+<script src="../../js/jquery-3.1.1.js"></script>
+<script src="../../bootstrap-4.0.0-dist/js/bootstrap.bundle.js"></script>
+<script src="../../bootstrap-4.0.0-dist/js/bootstrap.js"></script>
+
+<script>
+
+   $(function(){
+      //获取医疗机构信息
+      getHo();
+   });
+
+   $('#birthday').focus(function(){
+    var obj = $(this);
+    obj.prop('type','date');
+    setTimeout(function(){obj.trigger('click');},10);
+   });
+
+   $('#birthday').blur(function(){
+    var obj = $(this);
+    if(!obj.val()){
+        obj.prop('type','text');
+    }
+   });
+
+   $('#reservationDay').focus(function(){
+    var obj = $(this);
+    obj.prop('type','date');
+    setTimeout(function(){obj.trigger('click');},10);
+   });
+
+   $('#reservationDay').blur(function(){
+    var obj = $(this);
+    if(!obj.val()){
+        obj.prop('type','text');
+    }
+   });
+
+   function getHo(){
+     window.obj.getHO('');
+    //  getHO_ret('{"Ret":"ok", "Data":[{"InstName":"机构A", "InstID":"12", "Url":"预约访问地址", "PeerAddress":"peer节点地址", "Channel":"hdc"}]}')
+   }
+
+   function getHO_ret(arg){
+        //{"ret":"ok", [{"instName":"机构名称", "instID":"12", "url":"预约访问地址", "peerAddress":"peer节点地址", "channel":"hdc"}]}
+        var hoJson = JSON.parse(arg);
+        console.log(hoJson.Data)
+        for(var i = 0; i < hoJson.Data.length; i++){
+          var str = ''
+          str += '<div><button class="btn btn-info" data-toggle="modal" data-target="#myModal" style="margin-top: 2%;margin-bottom: 2%;width: 200px;">'
+             str += hoJson.Data[i].InstName
+          str += '</button></div>'
+          $(".main").append(str);
+          sessionStorage.setItem(hoJson.Data[i].InstID, hoJson.Data[i])
+        }
+    }
+
+
+   function next(){
+      if($('#userName').val() == ''){
+      alert('请输入用户名');
+      return;
+      }
+      if($('#tel').val() == ''){
+      alert('请输入用户手机号');
+      return;
+      }
+      if($('#birthday').val() == ''){
+      alert('请选择出生日期');
+      return;
+      }
+
+      var year = new Date().getFullYear();
+      var inputYear = $('#birthday').val().substr(0,4);
+      var age = year - parseInt(inputYear);
+      
+      var departArgs = {'Sex':$("#sex").val(),'Age':age};
+      //获取科室/检查项目信息
+      getDeparts(departArgs);
+      $('#myModal').modal('hide');
+      $('#myModal2').modal('show');
+    }
+
+    function getDeparts(departArgs){
+        window.obj.getDeparts(departArgs)
+        // getDeparts_ret('{"Ret":"ok", "Data":[{"DepartName":"血糖", "DepartID":"1234"},{"DepartName":"血脂", "DepartID":"1234"}]}')
+    }
+
+    function getDeparts_ret(arg) {
+        var departsJson = JSON.parse(arg);
+        console.log(departsJson.Data)
+        $(".departs_div").empty();
+        for(var i = 0; i < departsJson.Data.length; i++){
+        var str = ''
+          str += '<input type="button" class="btn btn-info" value="'
+             str += departsJson.Data[i].DepartName
+          str += '" onclick="apply(' + departsJson.Data[i].DepartID +')"  style="width: 60%;margin-left: 20%;margin-bottom:10px;">'
+          $(".departs_div").append(str);
+        }
+    }
+    
+
+  function apply(departID){
+      //保存选择的科室/检查项目
+      $("#departID").val(departID);
+    
+      $('#myModal2').modal('hide');
+      $('#myModal3').modal('show');
+  }
+
+  function submit(){
+     if($('#reservationDay').val() == ''){
+      alert('请选择预约日期');
+      return;
+      }
+
+      console.log($("#reservationDay").val().replace(/-/g,"/"))
+      $.ajax({
+        type : "post",
+        url : "http://39.104.99.78:8666/member/reserve",
+        data:{
+            memberId:4567,
+            institutionId:1001,
+            dictionaryId:$("#departID").val(),
+            name:$("#userName").val(),
+            mobile:$("#tel").val(),
+            gender:$("#sex").val(),
+            reserveTime:$("#reservationDay").val().replace(/-/g,"/")
+        },
+        success : function(obj, textStatus) {
+            alert(JSON.stringify(obj))
+            window.obj.setItem("ivtID", obj.data)
+            history.back();
+        },
+        error : function(jqXHR, textStatus, errorThrown) {
+            alert(textStatus)
+        }
+      });
+    
+  }
+
+</script>
+	
+</html>
